@@ -52,4 +52,9 @@ public class EssentialsHook extends PluginHook<DuelsPlugin> {
         final User user;
         return (user = getPlugin().getUser(player)) != null && user.isVanished();
     }
+
+    public boolean isHidden(final Player player) {
+        final User user;
+        return (user = getPlugin().getUser(player)) != null && user.isHidden();
+    }
 }

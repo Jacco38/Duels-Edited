@@ -4,6 +4,7 @@ import com.meteordevelopments.duels.DuelsPlugin;
 import com.meteordevelopments.duels.Permissions;
 import com.meteordevelopments.duels.command.BaseCommand;
 import com.meteordevelopments.duels.command.commands.duel.subcommands.*;
+import com.meteordevelopments.duels.hook.hooks.EssentialsHook;
 import com.meteordevelopments.duels.hook.hooks.VaultHook;
 import com.meteordevelopments.duels.hook.hooks.worldguard.WorldGuardHook;
 import com.meteordevelopments.duels.kit.KitImpl;
@@ -26,6 +27,7 @@ public class DuelCommand extends BaseCommand {
 
     private final WorldGuardHook worldGuard;
     private final VaultHook vault;
+    private final EssentialsHook essentials;
 
     public DuelCommand(final DuelsPlugin plugin) {
         super(plugin, "duel", Permissions.DUEL, true);
@@ -40,6 +42,7 @@ public class DuelCommand extends BaseCommand {
         );
         this.worldGuard = hookManager.getHook(WorldGuardHook.class);
         this.vault = hookManager.getHook(VaultHook.class);
+        this.essentials = hookManager.getHook(EssentialsHook.class);
     }
 
     @Override
@@ -70,6 +73,11 @@ public class DuelCommand extends BaseCommand {
         final Player target = Bukkit.getPlayerExact(args[0]);
 
         if (target == null) {
+            lang.sendMessage(sender, "ERROR.player.not-found", args[0]);
+            return true;
+        }
+
+        if (essentials.isHidden(target)) {
             lang.sendMessage(sender, "ERROR.player.not-found", args[0]);
             return true;
         }
